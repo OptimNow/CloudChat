@@ -1,0 +1,45 @@
+{
+  "family": "cloudchat-app",
+  "taskRoleArn": "arn:aws:iam::582300541437:role/cloudchat-ecs-task-role",
+  "executionRoleArn": "arn:aws:iam::582300541437:role/ecsTaskExecutionRole",
+  "networkMode": "bridge",
+  "containerDefinitions": [
+    {
+      "name": "cloudchat-app",
+      "image": "582300541437.dkr.ecr.us-east-1.amazonaws.com/cloudchat/application:latest",
+      "cpu": 512,
+      "memory": 512,
+      "portMappings": [
+        {
+          "containerPort": 8000,
+          "hostPort": 8000,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": [
+        {
+          "name": "AWS_LOGIN_STRATEGY",
+          "value": "aws_iam_role"
+        },
+        {
+          "name": "AWS_REGION",
+          "value": "us-east-1"
+        }
+      ],
+      "essential": true,
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/cloudchat-app",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ],
+  "requiresCompatibilities": [
+    "EC2"
+  ],
+  "cpu": "512",
+  "memory": "512"
+}
